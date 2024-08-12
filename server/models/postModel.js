@@ -12,7 +12,8 @@ const postSchema = new Schema({
     },
     description: { type: String, required: true },
     creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    thumbnail: { type: String, required: true }
+    thumbnail: { type: String, required: true },
+   
 }, 
 { timestamps: true });
 

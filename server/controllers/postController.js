@@ -33,7 +33,7 @@ const createPost = async (req, res, next) => {
             }
 
             try {
-                const newPost = await Post.create({ title, category, description, thumbnail: newFilename, creator: req.user.id });
+                const newPost = await Post.create({ title, category, description, thumbnail: newFilename, creator: req.user.id});
                 if (!newPost) {
                     return next(new HttpError('Post could not be created', 422));
                 }
@@ -190,7 +190,7 @@ const editPost = async (req, res, next) => {
         if(req.user.id==oldPost.creator)
         {
         if (!req.files) {
-            updatedPost = await Post.findByIdAndUpdate(postId, { title, category, description }, { new: true });
+            updatedPost = await Post.findByIdAndUpdate(postId, { title, category, description}, { new: true });
 
         }
         else {
@@ -221,7 +221,7 @@ const editPost = async (req, res, next) => {
                 }
             })
 
-            updatedPost = await Post.findByIdAndUpdate(postId, { title, category, description, thumbnail: newFilename }, { new: true });
+            updatedPost = await Post.findByIdAndUpdate(postId, { title, category, description, thumbnail: newFilename}, { new: true });
         }
     }
 

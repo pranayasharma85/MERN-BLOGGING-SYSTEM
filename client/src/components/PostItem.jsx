@@ -26,11 +26,11 @@ const PostItem = ({postID,category,title,description,thumbnail,authorID,createdA
     <div className="post__footer">
         <PostAuthor authorID={authorID} createdAt={createdAt}/>
         <Link to={`/posts/categories/${category}`} className='btn category'>{category}</Link>
-    </div>
-</div>
-    </article>
-
-
+        
+       
+                </div>
+            </div>
+        </article>
     )
 }
 

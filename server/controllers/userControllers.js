@@ -21,7 +21,7 @@ const { log } = require('console')
 
 const registerUser = async (req, res, next) => {
     try {
-        const { name, email, password, password2} = req.body;
+        const { name, email, password, password2,isAdmin} = req.body;
         console.log(req.body);
         if (!name || !email || !password) {
             return next(new HttpError("Fill in the all fields.", 422));
@@ -43,7 +43,7 @@ const registerUser = async (req, res, next) => {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(password, salt)
-        const newUser = await User.create({ name, email: newEmail, password: hashedPass})
+        const newUser = await User.create({ name, email: newEmail, password: hashedPass,isAdmin})
         res.status(201).json(`New user ${newUser.email} registered`);
 
     } catch (error) {
@@ -85,9 +85,9 @@ const loginUser = async (req, res, next) => {
             return next(new HttpError("Invalid credentials", 422));
 
         }
-        const { _id: id, name } = user;
-        const token = jwt.sign({ id, name }, process.env.JWT_SECRET, { expiresIn: "1d" })
-        res.status(200).json({ token, id, name })
+        const { _id: id, name,isAdmin } = user;
+        const token = jwt.sign({ id, name,isAdmin }, process.env.JWT_SECRET, { expiresIn: "1d" })
+        res.status(200).json({ token, id, name,isAdmin })
 
     } catch (error) {
         return next(new HttpError("User login failed, Please check your credentials", 422));
@@ -203,7 +203,7 @@ const editUser = async (req, res, next) => {
 
     try {
 
-        const { name, email, currentPassword, newPassword, confirmNewPassword } = req.body;
+        const { name, email, currentPassword, newPassword, confirmNewPassword,isAdmin } = req.body;
         if (!name || !email || !currentPassword || !newPassword) {
             return next(new HttpError("fill in the all fields.", 422))
 
@@ -236,7 +236,7 @@ const editUser = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(newPassword, salt);
         //update user details
-        const newInfo = await User.findByIdAndUpdate(req.user.id, { name, email, password: hash }, { new: true });
+        const newInfo = await User.findByIdAndUpdate(req.user.id, { name, email, password: hash,isAdmin:isAdmin!==undefined?isAdmin:user.isAdmin }, { new: true });
         res.status(200).json(newInfo);
 
 
