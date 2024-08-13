@@ -1,17 +1,37 @@
-import { createContext,useEffect,useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
-export const UserContext=createContext();
-const UserProvider=({children})=>
-{
-    const [currentUser,setCurrentUser]=useState(JSON.parse(localStorage.getItem('user')))
+export const UserContext = createContext();
 
-    useEffect(()=>{
-        localStorage.setItem('user',JSON.stringify(currentUser))
-    },[currentUser])
+const UserProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
 
+  // Initialize state with data from localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
 
-    return <UserContext.Provider value={{currentUser,setCurrentUser}}>{children}</UserContext.Provider>
-}
+    try {
+      if (storedUser) {
+        setCurrentUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error('Failed to parse user data:', error);
+    }
+  }, []);
 
+  // Update localStorage whenever currentUser changes
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('user'); // Remove user data if currentUser is null
+    }
+  }, [currentUser]);
+
+  return (
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
 
 export default UserProvider;
