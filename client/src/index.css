@@ -1032,3 +1032,52 @@ h1 {
 
 
 
+/* ===================================Review Section==================================== */
+.review-form {
+  margin-top: 20px;
+}
+
+.review-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.review-form textarea,
+.review-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.review-form button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.review-form button:disabled {
+  background-color: #cccccc;
+}
+
+.reviews {
+  margin-top: 30px;
+}
+
+.review {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.review strong {
+  display: block;
+  font-size: 1.1em;
+}
+
+.review p {
+  margin: 5px 0;
+}
+
+
+

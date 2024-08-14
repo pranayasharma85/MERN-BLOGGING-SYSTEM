@@ -16,7 +16,7 @@ if(Authorization && Authorization.startsWith("Bearer"))
 
         }
         req.user=info;
-        console.log(info)
+        // console.log(info)
         next()
 
     })
@@ -24,7 +24,7 @@ if(Authorization && Authorization.startsWith("Bearer"))
 
 else 
 {
-    return next(new HttpError("Unauthorized, No Token",402))
+    return next(new HttpError("Unauthorized, No Token",401))
 
 }
 }

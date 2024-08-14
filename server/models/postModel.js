@@ -1,20 +1,34 @@
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
 
-const postSchema = new Schema({
-    title: { type: String, required: true },
-    category: { 
-        type: String, 
-        enum: {
-            values: ["Agriculture", "Business", "Education", "Entertainment", "Art", "Investment", "Uncategorized", "Weather"],
-            message: '{VALUE} is not supported'
-        },
-        required: true
-    },
-    description: { type: String, required: true },
-    creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    thumbnail: { type: String, required: true },
-   
-}, 
-{ timestamps: true });
+const reviewSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User model
+    required: true
+  },
+  comment: {
+    type: String,
+    required: true
+  },
+  rating: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true
+  },
+}, {
+  timestamps: true
+});
 
-module.exports = model("Post", postSchema);
+const postSchema = new mongoose.Schema({
+  title: String,
+  category: String,
+  description: String,
+  thumbnail: String,
+  creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  reviews: [reviewSchema], // Embedded review schema
+  rating: { type: Number, default: 0 },
+  // other fields...
+});
+
+module.exports = mongoose.model('Post', postSchema);
