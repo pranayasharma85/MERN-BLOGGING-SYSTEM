@@ -28,7 +28,7 @@ const PostItem = ({ postID, category, title, description, thumbnail, authorID, c
           <span>Rating: {rating?.toFixed(1)} / 5</span>
         </div>
 
-        <div className="post__reviews">
+        {/* <div className="post__reviews">
           <h4>Recent Reviews:</h4>
           {reviews?.length > 0 ? (
             reviews.slice(0, 2).map((review, index) => (
@@ -40,7 +40,7 @@ const PostItem = ({ postID, category, title, description, thumbnail, authorID, c
           ) : (
             <p>No reviews yet.</p>
           )}
-        </div>
+        </div> */}
       </div>
     </article>
   );

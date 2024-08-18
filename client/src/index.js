@@ -22,6 +22,8 @@ import AdminProvider from './context/adminContext';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminLogin from './pages/admin/AdminLogin';
 import UserDetail from './pages/admin/UserDetail';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
@@ -60,5 +62,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
+    <ToastContainer/>
   </React.StrictMode>
 );
