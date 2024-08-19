@@ -9,7 +9,9 @@ const {
     deletePost, 
     createReview,     // Add createReview function
     getReviews,        // Add getReviews function
-    addReview
+    addReview,
+    likePost,
+    unlikePost
 } = require('../controllers/postController');
 const authMiddleware = require('../middleware/authMiddleware');
 
@@ -28,5 +30,10 @@ router.delete('/:id', authMiddleware, deletePost);
 // router.post('/:id/reviews', authMiddleware, createReview); // Create a review
 router.get('/:id/reviews', getReviews);                    // Get all reviews for a post
 router.post('/:postId/reviews', authMiddleware, addReview);
+
+
+router.post('/:id/like', authMiddleware, likePost);      // Like a post
+router.post('/:id/unlike', authMiddleware, unlikePost);  // Unlike a post
+
 
 module.exports = router;

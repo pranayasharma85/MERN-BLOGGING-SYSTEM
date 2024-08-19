@@ -29,6 +29,7 @@ const postSchema = new mongoose.Schema({
   reviews: [reviewSchema], // Embedded review schema
   rating: { type: Number, default: 0 },
   // other fields...
+  likes:[{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 
 module.exports = mongoose.model('Post', postSchema);

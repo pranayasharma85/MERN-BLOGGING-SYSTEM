@@ -114,16 +114,20 @@ const getPosts = async (req, res, next) => {
 const getPost = async (req, res, next) => {
     try {
         const postId = req.params.id;
-        const post = await Post.findById(postId);
+        // Find post and populate the creator and likes fields
+        const post = await Post.findById(postId)
+            .populate('creator', 'name') // Populate creator with only name field (adjust as needed)
+            .populate('likes', 'name'); // Populate likes with only name field (adjust as needed)
+
         if (!post) {
             return next(new HttpError("Post not found", 404));
         }
+
         res.status(200).json(post);
     } catch (error) {
         return next(new HttpError(error.message, 500));
     }
 };
-
 //====================================GET POSTS BY CATEGORY ============================
 //GET: api/posts/categories/:category
 //UNPROTECTED
@@ -291,5 +295,53 @@ const addReview = async (req, res) => {
     }
   };
 
+  const likePost = async (req, res, next) => {
+    try {
+        const postId = req.params.id;
+        const userId = req.user.id;
 
-module.exports = { createPost, createReview, getPost, getPosts, getCatPosts, getUserPosts, editPost, deletePost,getReviews,addReview };
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        if (post.likes.includes(userId)) {
+            return res.status(400).json({ message: 'Post already liked by this user' });
+        }
+
+        post.likes.push(userId);
+        await post.save();
+
+        res.status(200).json({ message: 'Post liked successfully', post });
+    } catch (error) {
+        return next(new HttpError(error.message, 500));
+    }
+};
+
+  // Unlike a Post
+  const unlikePost = async (req, res, next) => {
+    try {
+        const postId = req.params.id;
+        const userId = req.user.id;
+
+        const post = await Post.findById(postId);
+        if (!post) {
+            return next(new HttpError("Post not found", 404));
+        }
+
+        // Check if the user has not liked the post
+        if (!post.likes.includes(userId)) {
+            return res.status(400).json({ message: "Post not liked" });
+        }
+
+        // Remove user ID from the list of likes
+        post.likes = post.likes.filter(like => like.toString() !== userId.toString());
+        await post.save();
+
+        res.status(200).json({ message: "Post unliked successfully" });
+    } catch (error) {
+        return next(new HttpError(error.message, 500));
+    }
+};
+
+module.exports = { createPost, createReview, getPost, getPosts, getCatPosts, getUserPosts, editPost, deletePost,getReviews,addReview,likePost,unlikePost };
