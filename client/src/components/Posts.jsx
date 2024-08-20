@@ -27,6 +27,7 @@ const Posts = () => {
 
   return (
     <section className='posts'>
+      <h1>Posts Available</h1>
       {posts.length > 0 ? (
         <div className='container posts__container'>
           {posts.map(({ _id: id, thumbnail, category, title, description, creator, createdAt, rating, reviews }) => (

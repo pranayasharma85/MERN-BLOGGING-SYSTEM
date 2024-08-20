@@ -7,6 +7,7 @@ const PostItem = ({ postID, category, title, description, thumbnail, authorID, c
   const postTitle = title.length > 30 ? title.substr(0, 30) + '...' : title;
 
   return (
+    
     <article className='post'>
       <div className="post__thumbnail">
         <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${thumbnail}`} alt={title} />

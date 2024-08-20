@@ -7,6 +7,7 @@ const upload=require('express-fileupload')
 const userRoutes=require('./routes/userRoutes');
 const postRoutes=require('./routes/postRoutes');
 const adminRoutes=require('./routes/admin');
+const { getRecommendations } = require('./controllers/recommendationController');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 
@@ -19,7 +20,8 @@ app.use('/uploads',express.static(__dirname + '/uploads'));
 
 app.use('/api/users',userRoutes);
 app.use('/api/posts',postRoutes);
-app.use('/api/admin',adminRoutes)
+app.use('/api/admin',adminRoutes);
+app.get('/api/recommendations/:userId', getRecommendations);
 
 
 app.use(notFound);

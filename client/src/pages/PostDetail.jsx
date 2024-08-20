@@ -104,14 +104,14 @@ import Loader from "../components/Loader";
 import DeletePost from "./DeletePost";
 import ReviewForm from "../components/ReviewForm";
 import { UserContext } from "../context/userContext";
-import { Tooltip } from "@chakra-ui/react"; // Import Chakra UI's Tooltip component
+import { Tooltip } from "@chakra-ui/react";
 
 const PostDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
 
@@ -119,16 +119,16 @@ const PostDetail = () => {
 
   useEffect(() => {
     const getPost = async () => {
-      setIsLoading(true);
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/${id}`);
         setPost(response.data);
         setLikesCount(response.data.likes?.length || 0);
-        setIsLiked(response.data.likes?.some(user => user._id === currentUser?.id)); // Check if user has liked
+        setIsLiked(response.data.likes?.some(user => user._id === currentUser?.id));
       } catch (error) {
         setError(error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     const getReviews = async () => {
@@ -142,7 +142,7 @@ const PostDetail = () => {
 
     getPost();
     getReviews();
-  }, [id, currentUser?.id, isLiked]);  // Added isLiked to the dependency array
+  }, [id, currentUser?.id]);
 
   const handleLike = async () => {
     if (!currentUser?.token) {
@@ -151,7 +151,6 @@ const PostDetail = () => {
     }
 
     try {
-      console.log('Attempting to like post...');
       await axios.post(`${process.env.REACT_APP_BASE_URL}/posts/${id}/like`, {}, {
         headers: { Authorization: `Bearer ${currentUser?.token}` }
       });
@@ -169,7 +168,6 @@ const PostDetail = () => {
     }
 
     try {
-      console.log('Attempting to unlike post...');
       await axios.post(`${process.env.REACT_APP_BASE_URL}/posts/${id}/unlike`, {}, {
         headers: { Authorization: `Bearer ${currentUser?.token}` }
       });
