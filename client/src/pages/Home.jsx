@@ -7,8 +7,8 @@ import Recommendations from '../components/Recommendations'
 
 const Home = () => {
   return (
-    <><Recommendations/>
-    <Posts/></>
+    <><Posts/>
+    <Recommendations/></>
 
   )
 }

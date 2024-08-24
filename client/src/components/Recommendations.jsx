@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from '../context/userContext';
-// import './Recommendations.css'; // Import the CSS file
+// import './Recommendations.css'; // Make sure this file is correctly imported
 
 const Recommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
@@ -25,19 +25,24 @@ const Recommendations = () => {
 
   return (
     <div className="recommendations-container">
-      <h2>Recommended Posts</h2>
+      <h2 className="recommendations-title">Recommended Posts</h2>
       {error && <p className="error">{error}</p>}
       {recommendations.length > 0 ? (
         recommendations.map(post => (
           <div key={post._id} className="post">
-            {post.thumbnail && <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`} alt={post.title} className="post-thumbnail" />}
+            {post.thumbnail && (
+              <img
+                className="post-thumbnail"
+                src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`}
+                alt={post.title}
+              />
+            )}
             <h3 className="post-title">{post.title}</h3>
             <p className="post-description">{post.description}</p>
           </div>
         ))
       ) : (
-        <p className="no-recommendations">No recommendations available.
-        First You Have To Login !!!</p>
+        <p className="no-recommendations">No recommendations available.</p>
       )}
     </div>
   );
