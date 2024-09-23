@@ -96,17 +96,56 @@ const createReview = async (req, res) => {
   };
   
   
+// //====================================GET ALL POSTS ============================
+// //GET: api/posts
+// //UNPROTECTED
+// const getPosts = async (req, res, next) => {
+//     try {
+//         const posts = await Post.find().sort({ updatedAt: -1 });
+//         res.status(200).json(posts);
+//     } catch (error) {
+//         return next(new HttpError(error.message, 500));
+//     }
+// };
 //====================================GET ALL POSTS ============================
 //GET: api/posts
 //UNPROTECTED
 const getPosts = async (req, res, next) => {
     try {
-        const posts = await Post.find().sort({ updatedAt: -1 });
-        res.status(200).json(posts);
+      const page = parseInt(req.query.page, 10) || 1;
+      const limit = parseInt(req.query.limit, 10) || 10;
+      const startIndex = (page - 1) * limit;
+  
+      const totalPosts = await Post.countDocuments();
+      const posts = await Post.find()
+        .sort({ updatedAt: -1 })
+        .skip(startIndex)
+        .limit(limit);
+  
+      const totalPages = Math.ceil(totalPosts / limit);
+  
+      res.status(200).json({
+        page,
+        limit,
+        totalPages,
+        totalPosts,
+        posts,
+      });
     } catch (error) {
-        return next(new HttpError(error.message, 500));
+      next(new HttpError(error.message, 500));
     }
-};
+  };
+  
+
+
+
+
+
+
+  
+  
+  
+  
 
 //====================================GET SINGLE POST ============================
 //GET: api/posts/:id

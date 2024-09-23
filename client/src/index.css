@@ -1164,3 +1164,42 @@ h1 {
   text-align: center;
   margin: 20px;
 }
+
+
+
+/* ===================================Paginate=============================================== */
+/* Pagination container */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Pagination button styles */
+.pagination-button {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+  background-color: #0056b3;
+}
+
+/* Active page button */
+.pagination-button.active {
+  background-color: #0056b3;
+  font-weight: bold;
+}
+
+/* Disabled button style */
+.pagination-button:disabled {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+}
