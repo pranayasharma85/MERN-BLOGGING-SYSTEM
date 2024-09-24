@@ -93,7 +93,13 @@ const User = require('../models/userModel');
 exports.getRecommendations = async (req, res) => {
   const { userId } = req.params;
 
-  try {
+  try { 
+    // If userId is not provided, fetch random posts
+    if (!userId) {
+      const randomPosts = await Post.aggregate([{ $sample: { size: 10 } }]);
+      return res.status(200).json(randomPosts);
+    }
+    
     // Fetch the user's liked and reviewed posts
     const user = await User.findById(userId);
     if (!user) {
@@ -153,3 +159,4 @@ exports.getRecommendations = async (req, res) => {
     res.status(500).json({ message: 'Error fetching recommendations', error: error.message });
   }
 };
+

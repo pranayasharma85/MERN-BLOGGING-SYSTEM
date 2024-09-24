@@ -9,7 +9,7 @@ const postRoutes=require('./routes/postRoutes');
 const adminRoutes=require('./routes/admin');
 const { getRecommendations } = require('./controllers/recommendationController');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
-
+const recommendationRoutes=require('./routes/recommendation');
 
 const app=express();
 app.use(express.json({extended:true}));
@@ -22,6 +22,8 @@ app.use('/api/users',userRoutes);
 app.use('/api/posts',postRoutes);
 app.use('/api/admin',adminRoutes);
 app.get('/api/recommendations/:userId', getRecommendations);
+app.use('/api/recommendations',recommendationRoutes);
+
 
 
 app.use(notFound);
